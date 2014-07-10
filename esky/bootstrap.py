@@ -524,13 +524,15 @@ def is_uninstalled_version_dir(vdir):
     return False
     
 
-
 def split_app_version(s):
     """Split an app version string to name, version and platform components.
 
     For example, app-name-0.1.2.win32 => ("app-name","0.1.2","win32")
     """
-    bits = s.split("-")
+    platform_split_point = s.rfind('.')
+    name_version = s[0: platform_split_point]
+    platform = s[platform_split_point+1:]
+    bits = name_version.split("-")
     idx = 1
     while idx < len(bits):
         if bits[idx]:
@@ -540,7 +542,6 @@ def split_app_version(s):
     appname = "-".join(bits[:idx])
     bits = "-".join(bits[idx:]).split(".")
     version = ".".join(bits[:-1])
-    platform = bits[-1]
     return (appname,version,platform)
 
 
