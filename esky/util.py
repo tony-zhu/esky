@@ -385,7 +385,7 @@ def get_platform():
         esky_platform = distutils.util.get_platform().replace(".","_")
         if "linux" in esky_platform:
             distribution = "%s_%s" % (platform.linux_distribution()[0], platform.linux_distribution()[1].replace(".","_"))
-            esky_platform = "%s_%s" % (distribution, esky_platform)
+            esky_platform = "%s-%s" % (esky_platform, distribution)
         _CACHED_PLATFORM = esky_platform
     return _CACHED_PLATFORM
 
