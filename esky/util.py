@@ -11,6 +11,7 @@ from __future__ import absolute_import
 
 import sys
 import errno
+import platform
 
 #  Since esky apps are required to call the esky.run_startup_hooks() method on
 #  every invocation, we want as little overhead as possible when importing
@@ -381,7 +382,11 @@ def get_platform():
     """
     global _CACHED_PLATFORM
     if _CACHED_PLATFORM is None:
-        _CACHED_PLATFORM = distutils.util.get_platform().replace(".","_")
+        esky_platform = distutils.util.get_platform().replace(".","_")
+        if "linux" in esky_platform:
+            distribution = "%s_%s" % (platform.linux_distribution()[0], platform.linux_distribution()[1].replace(".","_"))
+            esky_platform = "%s_%s" % (distribution, esky_platform)
+        _CACHED_PLATFORM = esky_platform
     return _CACHED_PLATFORM
 
 
@@ -515,5 +520,6 @@ def really_rmtree(path):
                 break
         else:
             shutil.rmtree(path)
+
 
 
